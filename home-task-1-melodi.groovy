@@ -8,7 +8,7 @@ if (nodeIP?.trim()) {
     node {
         withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-master-ssh-key', keyFileVariable: 'SSHKEY', passphraseVariable: '', usernameVariable: 'SSHUSERNAME')]) {
             stage('Pull Repo') {
-                git branch: '${repo_branch}', changelog: false, poll: false, url: 'https://github.com/ikambarov/ansible-melodi.git'
+                git branch: '${repo_branch}', changelog: false, poll: false, url: 'https://github.com/ikambarov/melodi.git'
             }
             stage("Install Apache"){
                 sh 'ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${nodeIP} yum install httpd -y'
@@ -21,6 +21,12 @@ if (nodeIP?.trim()) {
             }
             stage("Start Apache"){
                 sh 'ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@${nodeIP} "systemctl start httpd && systemctl enable httpd"'
+            }
+            stage("Clean Workspace"){
+                cleanWs()
+            }
+            stage("Send a message to Slack"){
+                slackSend channel: 'apr_devops_2020', message: 'mission accomplished '
             }
         }
     }
