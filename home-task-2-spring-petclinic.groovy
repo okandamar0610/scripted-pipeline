@@ -6,7 +6,7 @@ properties([
 if (nodeIP.length() > 6) {
     node {
         stage('Pull Repo') {
-            git branch: 'master', changelog: false, poll: false, url: 'https://github.com/ksalrin/anisble-springpetclinic.git'
+            git branch: 'master', changelog: false, poll: false, url: 'https://github.com/okandamar0610/ansible-springpetclinic.git'
         }
         withEnv(['ANSIBLE_HOST_KEY_CHECKING=False', 'SPRINGPETCLINIC_REPO=https://github.com/ikambarov/spring-petclinic.git', 'SPRINGPETCLINIC_BRANCH=master']) {
             stage("Install Prerequisites"){
