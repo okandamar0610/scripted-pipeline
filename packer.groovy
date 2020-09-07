@@ -21,7 +21,7 @@ node {
             cleanWs()
         }
     stage('Pull Repo') {
-        git url: 'https://github.com/ikambarov/packer.git'
+        git url: 'https://github.com/okandamar0610/packer-1.git'
     }
 
     withCredentials([usernamePassword(credentialsId: 'jenkins-aws-access-key', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
@@ -34,7 +34,7 @@ node {
             stage('Packer Build') {
                 sh 'packer build apache.json | tee output.txt'
 
-                ami_id = sh(script: 'cat output.txt | grep us-east-2 | awk \'{print $2}\'', returnStdout: true)
+                ami_id = sh(script: "cat output.txt | grep ${aws_region_var} | awk \'{print $2}\'", returnStdout: true)
                 println(ami_id)
             }
 

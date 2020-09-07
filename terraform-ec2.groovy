@@ -28,6 +28,8 @@ def tf_vars = """
     ami_id      = \"${params.ami_id}\"
 """
 node{
+
+    
     stage("Pull Repo"){
         cleanWs()
         git url: 'https://github.com/okandamar0610/terraform-ec2.git'
